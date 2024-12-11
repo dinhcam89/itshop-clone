@@ -19,7 +19,7 @@ spec:
           ports:
             - containerPort: {{ .Values.services.frontend.port }}
           env:
-            - name: API_GATEWAY_URL
+            - name: REACT_APP_API_URL
               value: {{ if eq .Values.active true }}
                 "http://api.gke-prod.dinhcam.tech"
               {{ else }}
