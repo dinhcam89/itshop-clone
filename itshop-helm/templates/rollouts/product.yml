@@ -1,5 +1,5 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: {{ .Values.services.productService.name }}
 spec:
@@ -27,5 +27,8 @@ spec:
                 configMapKeyRef:
                   name: common-config
                   key: INVENTORY_SERVICE_URL
-      imagePullSecrets:
-        - name: {{ .Values.images.pullSecret }}
+  strategy:
+    blueGreen:
+      activeService: {{ .Values.services.productService.name }}-active
+      previewService: {{ .Values.services.productService.name }}-preview
+      autoPromotionEnabled: false

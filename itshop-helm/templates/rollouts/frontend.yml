@@ -1,5 +1,5 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: {{ .Values.services.frontend.name }}
 spec:
@@ -18,5 +18,15 @@ spec:
           imagePullPolicy: {{ .Values.images.pullPolicy }}
           ports:
             - containerPort: {{ .Values.services.frontend.port }}
-      imagePullSecrets:
-        - name: {{ .Values.images.pullSecret }}
+          env:
+            - name: API_GATEWAY_URL
+              value: {{ if eq .Values.active true }}
+                "http://api.gke-prod.dinhcam.tech"
+              {{ else }}
+                "http://api-preview.gke-prod.dinhcam.tech"
+              {{ end }}
+  strategy:
+    blueGreen:
+      activeService: {{ .Values.services.frontend.name }}-active
+      previewService: {{ .Values.services.frontend.name }}-preview
+      autoPromotionEnabled: false

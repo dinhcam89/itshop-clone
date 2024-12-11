@@ -1,11 +1,10 @@
 global:
-  environment: dev
+  environment: production
 
 images:
-  registry: harbor.dinhcam.tech/dev-registry
+  registry: dinhcam89
   pullPolicy: IfNotPresent
-  tag: b3ea2db7
-  pullSecret: harbor-registry-secret
+  tag: v0.0.7-prod
 
 services:
   apiGateway:
