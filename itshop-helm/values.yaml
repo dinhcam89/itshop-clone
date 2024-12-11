@@ -5,7 +5,7 @@ images:
   registry: dinhcam89
   pullPolicy: IfNotPresent
   tag: v0.0.7-prod
-
+active: true
 services:
   apiGateway:
     name: api-gateway
