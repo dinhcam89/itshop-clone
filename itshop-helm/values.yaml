@@ -4,7 +4,7 @@ global:
 images:
   registry: harbor.dinhcam.tech/dev-registry
   pullPolicy: IfNotPresent
-  tag: 1537d2b9
+  tag: b3ea2db7
   pullSecret: harbor-registry-secret
 
 services:
