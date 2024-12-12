@@ -21,7 +21,7 @@ spec:
           command:
             - sh
             - -c
-            args:
+          args:
             - sed -i "s/__api_url___/$REACT_APP_API_URL/g" /usr/share/nginx/html/env.js;
               nginx -g 'daemon off;'
           env:
