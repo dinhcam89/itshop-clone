@@ -14,15 +14,15 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: dinhcam89/frontend:v0.0.6-dev
+          image: dinhcam89/frontend:v0.0.7-dev
           ports:
             - containerPort: 80
-          command:
-            - "/bin/sh"
-            - "-c"
-          args:
-            - |
-              sed -i "s|__api_url__|${REACT_APP_API_URL}|g" /usr/share/nginx/html/env.js && nginx -g "daemon off;";
+          # command:
+          #   - "/bin/sh"
+          #   - "-c"
+          # args:
+          #   - |
+          #     sed -i "s|__api_url__|${REACT_APP_API_URL}|g" /usr/share/nginx/html/env.js && nginx -g "daemon off;";
 
           env:
             - name: REACT_APP_API_URL

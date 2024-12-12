@@ -6,14 +6,14 @@ WORKDIR /app
 # Copy package files
 COPY package.json package-lock.json ./
 
-# Định nghĩa ARG trước khi sử dụng trong ENV
-# ARG API_URL
-# ENV REACT_APP_API_URL=${API_URL}
 # Install dependencies
 RUN npm install
 
 # Copy source code
 COPY . .
+
+# Add a placeholder for env.js
+RUN echo "window.env = {};" > public/env.js
 
 # Build application
 RUN npm run build
@@ -26,6 +26,12 @@ COPY --from=build /app/build /usr/share/nginx/html
 
 # Expose port
 EXPOSE 80
+
+# Add a script to inject environment variables into env.js at runtime
+COPY ./inject-env.sh /docker-entrypoint.d/
+
+# Make the script executable
+RUN chmod +x /docker-entrypoint.d/inject-env.sh
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
