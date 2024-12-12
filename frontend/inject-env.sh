@@ -10,7 +10,7 @@ echo "  REACT_APP_API_URL_PREVIEW: \"$REACT_APP_API_URL_PREVIEW\"" >> /usr/share
 # Close the window.env object
 echo "};" >> /usr/share/nginx/html/env.js
 
-# Print the env.js file for verification (optional)
+# Print the env.js file for verification
 cat /usr/share/nginx/html/env.js
 
 # Start Nginx

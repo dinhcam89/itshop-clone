@@ -25,13 +25,21 @@ spec:
           #   - sed -i "s/__api_url_active__/$REACT_APP_API_URL_ACTIVE/g" /usr/share/nginx/html/env.js;
           #     sed -i "s/__api_url_preview__/$REACT_APP_API_URL_PREVIEW/g" /usr/share/nginx/html/env.js;
           #     nginx -g 'daemon off;'
-          env:
-            - name: REACT_APP_API_URL_ACTIVE
-              value: {{ .Values.apiUrls.active }} # Active URL passed from Helm values
-            - name: REACT_APP_API_URL_PREVIEW
-              value: {{ .Values.apiUrls.preview }} # Preview URL passed from Helm values
+          # env:
+          #   - name: REACT_APP_API_URL_ACTIVE
+          #     value: {{ .Values.apiUrls.active }} # Active URL passed from Helm values
+          #   - name: REACT_APP_API_URL_PREVIEW
+          #     value: {{ .Values.apiUrls.preview }} # Preview URL passed from Helm values
   strategy:
     blueGreen:
       activeService: {{ .Values.services.frontend.name }}-active
       previewService: {{ .Values.services.frontend.name }}-preview
       autoPromotionEnabled: false
+      activeMetadata:
+        labels:
+          REACT_APP_API_URL_ACTIVE: {{ .Values.apiUrls.active }}
+          role: active
+      previewMetadata:
+        labels:
+          REACT_APP_API_URL_PREVIEW: {{ .Values.apiUrls.preview }}
+          role: preview
