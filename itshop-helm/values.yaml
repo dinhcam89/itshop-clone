@@ -6,9 +6,10 @@ images:
   pullPolicy: IfNotPresent
   tag: v1.0.3-prod
 
-apiUrls:
-  active: "http://api.gke-prod.dinhcam.tech"
-  preview: "http://api-preview.gke-prod.dinhcam.tech"
+# apiUrls:
+#   active: "http://api.gke-prod.dinhcam.tech"
+#   preview: "http://api-preview.gke-prod.dinhcam.tech"
+active: true
 
 services:
   apiGateway:

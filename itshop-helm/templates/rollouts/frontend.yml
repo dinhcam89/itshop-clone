@@ -22,15 +22,14 @@ spec:
             - sh
             - -c
           args:
-            - |
-              sed -i "s/__api_url_active__/${REACT_APP_ACTIVE_API_URL}/g" /usr/share/nginx/html/env.js;
-              sed -i "s/__api_url_preview__/${REACT_APP_PREVIEW_API_URL}/g" /usr/share/nginx/html/env.js;
-              nginx -g 'daemon off;'
+            - /usr/local/bin/inject-env.sh && nginx -g 'daemon off;'
           env:
-            - name: REACT_APP_ACTIVE_API_URL
-              value: {{ .Values.apiUrls.active }}
-            - name: REACT_APP_PREVIEW_API_URL
-              value: {{ .Values.apiUrls.preview }}
+            - name: REACT_APP_API_URL
+              value: {{ if eq .Values.active true }}
+                "http://api.gke-prod.dinhcam.tech"
+              {{ else }}
+                "http://api-preview.gke-prod.dinhcam.tech"
+              {{ end }}
   strategy:
     blueGreen:
       activeService: {{ .Values.services.frontend.name }}-active
