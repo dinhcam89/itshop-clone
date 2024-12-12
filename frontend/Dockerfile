@@ -7,8 +7,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Định nghĩa ARG trước khi sử dụng trong ENV
-ARG REACT_APP_API_URL
-ENV REACT_APP_API_URL=$REACT_APP_API_URL
+# ARG REACT_APP_API_URL
+# ENV REACT_APP_API_URL=$REACT_APP_API_URL
 # Install dependencies
 RUN npm install
 
