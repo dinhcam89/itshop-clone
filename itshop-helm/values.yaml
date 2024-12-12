@@ -4,12 +4,11 @@ global:
 images:
   registry: dinhcam89
   pullPolicy: IfNotPresent
-  tag: v1.0.3-prod
+  tag: v1.0.4-prod
 
-# apiUrls:
-#   active: "http://api.gke-prod.dinhcam.tech"
-#   preview: "http://api-preview.gke-prod.dinhcam.tech"
-active: true
+apiUrls:
+  active: "http://api.gke-prod.dinhcam.tech"
+  preview: "http://api-preview.gke-prod.dinhcam.tech"
 
 services:
   apiGateway:
