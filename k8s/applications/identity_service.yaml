@@ -39,4 +39,4 @@ kind: ConfigMap
 metadata:
   name: identity-service-config
 data:
-  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql.default.svc.cluster.local:3306/identity_service"
+  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql.app.svc.cluster.local:3306/identity_service"
