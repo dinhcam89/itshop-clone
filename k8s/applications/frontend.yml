@@ -22,7 +22,8 @@ spec:
             - "-c"
           args:
             - |
-              sed -i "s/__api_url__/${REACT_APP_API_URL}/g" /usr/share/nginx/html/env.js && nginx -g "daemon off;";
+              sed -i "s|__api_url__|${REACT_APP_API_URL}|g" /usr/share/nginx/html/env.js && nginx -g "daemon off;";
+
           env:
             - name: REACT_APP_API_URL
               value: "http://api.gke-dev.dinhcam.tech"
