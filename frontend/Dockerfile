@@ -6,6 +6,9 @@ WORKDIR /app
 # Copy package files
 COPY package.json package-lock.json ./
 
+# Định nghĩa ARG trước khi sử dụng trong ENV
+# ARG API_URL
+# ENV REACT_APP_API_URL=${API_URL}
 # Install dependencies
 RUN npm install
 
@@ -18,17 +21,11 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 
-WORKDIR /usr/share/nginx/html
-
 # Copy built assets from build stage
-COPY --from=build /app/build .
-
-# Add the runtime environment script
-COPY ./set-env.sh ./set-env.sh
-RUN chmod +x ./set-env.sh
+COPY --from=build /app/build /usr/share/nginx/html
 
 # Expose port
 EXPOSE 80
 
-# Start nginx with runtime script
-CMD ["sh", "-c", "./set-env.sh && nginx -g 'daemon off;'"]
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
