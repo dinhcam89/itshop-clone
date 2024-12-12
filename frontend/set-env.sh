@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# Replace the placeholder in the template with the runtime environment variable
-envsubst < ./env.template.js > ./env.js
+# Replace the placeholder with the runtime environment variable
+echo "window.env = { REACT_APP_API_URL: '${REACT_APP_API_URL}' };" > /usr/share/nginx/html/env.js
 
-# Serve the modified file
-chmod 644 ./env.js
+# Ensure the generated file has the correct permissions
+chmod 644 /usr/share/nginx/html/env.js
