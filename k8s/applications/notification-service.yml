@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: notification-service
-          image: 4miby/notification-service:latest
+          image: dinhcam89/notification-service:v0.0.1-dev
           env:
             - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
               valueFrom:

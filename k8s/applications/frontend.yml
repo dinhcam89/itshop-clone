@@ -14,11 +14,22 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 4miby/frontend:latest
+          image: dinhcam89/frontend:v0.0.1-dev
           ports:
             - containerPort: 80
-          
-
+          env:
+            - name: REACT_APP_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: apiUrl
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+data:
+  apiUrl: "https://api.gke-dev.dinhcam.tech"
 ---
 apiVersion: v1
 kind: Service
@@ -32,6 +43,3 @@ spec:
       port: 80
       targetPort: 80
       name: http
----
-
-

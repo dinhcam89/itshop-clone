@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: product-service
-          image: 4miby/product-service:latest
+          image: dinhcam89/product-service:v0.0.1-dev
           env:
             - name: SPRING_DATA_MONGODB_URI
               valueFrom:

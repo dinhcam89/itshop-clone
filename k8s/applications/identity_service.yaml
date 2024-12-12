@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: identity-service
-          image: 4miby/identity-service:latest
+          image: dinhcam89/identity-service:v0.0.1-dev
           env:
             - name: SPRING_DATASOURCE_URL
               valueFrom:

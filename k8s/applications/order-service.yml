@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: order-service
-          image: 4miby/order-service:latest
+          image: dinhcam89/order-service:v0.0.1-dev
           env:
             - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
               valueFrom:
