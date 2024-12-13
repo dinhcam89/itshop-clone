@@ -40,4 +40,4 @@ jobs:
         run: |
           helm registry login $HARBOR_URL -u $HARBOR_USERNAME -p $HARBOR_PASSWORD
           CHART_NAME=$(ls ./helm-charts/packages/*.tgz)
-          helm push $CHART_NAME oci://$HARBOR_URL/helm-test:v0.1.1
+          helm push $CHART_NAME oci://$HARBOR_URL/helm-test
