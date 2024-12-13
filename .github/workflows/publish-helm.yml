@@ -44,7 +44,7 @@ jobs:
           HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
         run: |
           # Add the legacy Helm repository
-          helm repo add harbor-helm https://$HARBOR_URL/chartrepo/helm-test --username $HARBOR_USERNAME --password $HARBOR_PASSWORD
+          helm repo add harbor-helm oci://$HARBOR_URL/chartrepo/helm-test --username $HARBOR_USERNAME --password $HARBOR_PASSWORD
 
           # Push the packaged Helm chart
           CHART_NAME=$(ls ./helm-charts/packages/*.tgz)
