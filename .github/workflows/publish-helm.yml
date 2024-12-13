@@ -23,7 +23,7 @@ jobs:
 
       # Step 3: Lint Helm Chart
       - name: Lint Helm Chart
-        run: helm lint ./helm-charts/mychart
+        run: helm lint ./helm-charts/itshop-helm
 
       # Step 4: Package Helm Chart
       - name: Package Helm Chart
