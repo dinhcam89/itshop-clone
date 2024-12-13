@@ -1,4 +1,4 @@
-name: Publish Helm Chart to Harbor
+name: Publish Helm Chart to Harbor (Legacy Repository)
 
 on:
   push:
@@ -21,31 +21,31 @@ jobs:
         with:
           version: v3.12.0
 
-      # Step 3: Lint Helm Chart
+      # Step 3: Install Helm Push Plugin (for legacy Helm repository)
+      - name: Install Helm Push Plugin
+        run: |
+          helm plugin install https://github.com/chartmuseum/helm-push
+
+      # Step 4: Lint Helm Chart
       - name: Lint Helm Chart
         run: helm lint ./helm-charts/itshop-helm
 
-      # Step 4: Package Helm Chart
+      # Step 5: Package Helm Chart
       - name: Package Helm Chart
         run: |
           helm package ./helm-charts/itshop-helm -d ./helm-charts/packages
           ls -l ./helm-charts/packages
 
-      # Step 5: Push Helm Chart to Harbor (with conditional handling for OCI vs Legacy)
-      - name: Push Helm Chart to Harbor
+      # Step 6: Push Helm Chart to Legacy Harbor Repository
+      - name: Push Helm Chart to Harbor (Legacy)
         env:
           HARBOR_URL: ${{ secrets.HARBOR_URL }}
           HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
           HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
         run: |
-          CHART_NAME=$(ls ./helm-charts/packages/*.tgz)
+          # Add the legacy Helm repository
+          helm repo add harbor-helm https://$HARBOR_URL/chartrepo/helm-test --username $HARBOR_USERNAME --password $HARBOR_PASSWORD
 
-          # Check if Harbor supports OCI (default behavior) or legacy Helm repository
-          if helm registry login $HARBOR_URL -u $HARBOR_USERNAME -p $HARBOR_PASSWORD; then
-            echo "Pushing chart using OCI protocol"
-            helm push $CHART_NAME oci://$HARBOR_URL/helm-test
-          else
-            echo "Pushing chart to legacy Helm repository"
-            helm repo add harbor-helm https://$HARBOR_URL/chartrepo/helm-test --username $HARBOR_USERNAME --password $HARBOR_PASSWORD
-            helm push $CHART_NAME harbor-helm
-          fi
+          # Push the packaged Helm chart
+          CHART_NAME=$(ls ./helm-charts/packages/*.tgz)
+          helm push $CHART_NAME harbor-helm
