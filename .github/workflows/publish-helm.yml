@@ -38,7 +38,6 @@ jobs:
           HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
           HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
         run: |
+          helm registry login $HARBOR_URL -u $HARBOR_USERNAME -p $HARBOR_PASSWORD
           CHART_NAME=$(ls ./helm-charts/packages/*.tgz)
-          curl -u $HARBOR_USERNAME:$HARBOR_PASSWORD \
-            -X PUT "$HARBOR_URL/helm-test/charts" \
-            -T $CHART_NAME
+          helm push $CHART_NAME oci://$HARBOR_URL/helm-test
