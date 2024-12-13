@@ -18,18 +18,6 @@ spec:
           imagePullPolicy: {{ .Values.images.pullPolicy }}
           ports:
             - containerPort: {{ .Values.services.frontend.port }}
-          # command:
-          #   - sh
-          #   - -c
-          # args:
-          #   - sed -i "s/__api_url_active__/$REACT_APP_API_URL_ACTIVE/g" /usr/share/nginx/html/env.js;
-          #     sed -i "s/__api_url_preview__/$REACT_APP_API_URL_PREVIEW/g" /usr/share/nginx/html/env.js;
-          #     nginx -g 'daemon off;'
-          env:
-            - name: REACT_APP_API_URL_ACTIVE
-              value: {{ .Values.apiUrls.active }} # Active URL passed from Helm values
-            - name: REACT_APP_API_URL_PREVIEW
-              value: {{ .Values.apiUrls.preview }} # Preview URL passed from Helm values
   strategy:
     blueGreen:
       activeService: {{ .Values.services.frontend.name }}-active
