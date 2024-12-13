@@ -31,13 +31,21 @@ jobs:
           helm package ./helm-charts/itshop-helm -d ./helm-charts/packages
           ls -l ./helm-charts/packages
 
-      # Step 5: Push Helm Chart to Harbor
+      # Step 5: Push Helm Chart to Harbor (with conditional handling for OCI vs Legacy)
       - name: Push Helm Chart to Harbor
         env:
           HARBOR_URL: ${{ secrets.HARBOR_URL }}
           HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
           HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
         run: |
-          helm registry login $HARBOR_URL -u $HARBOR_USERNAME -p $HARBOR_PASSWORD
           CHART_NAME=$(ls ./helm-charts/packages/*.tgz)
-          helm push $CHART_NAME oci://$HARBOR_URL/helm-test
+
+          # Check if Harbor supports OCI (default behavior) or legacy Helm repository
+          if helm registry login $HARBOR_URL -u $HARBOR_USERNAME -p $HARBOR_PASSWORD; then
+            echo "Pushing chart using OCI protocol"
+            helm push $CHART_NAME oci://$HARBOR_URL/helm-test
+          else
+            echo "Pushing chart to legacy Helm repository"
+            helm repo add harbor-helm https://$HARBOR_URL/chartrepo/helm-test --username $HARBOR_USERNAME --password $HARBOR_PASSWORD
+            helm push $CHART_NAME harbor-helm
+          fi
