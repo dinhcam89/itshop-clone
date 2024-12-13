@@ -1,0 +1,45 @@
+name: Publish Helm Chart to Harbor
+
+on:
+  push:
+    paths:
+      - 'itshop-helm/**'  # Trigger only when changes are made to the Helm chart folder
+    branches:
+      - dev
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Setup Helm
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.12.0
+
+      # Step 3: Lint Helm Chart
+      - name: Lint Helm Chart
+        run: helm lint ./helm-charts/mychart
+
+      # Step 4: Package Helm Chart
+      - name: Package Helm Chart
+        run: |
+          helm package ./helm-charts/mychart -d ./helm-charts/packages
+          ls -l ./helm-charts/packages
+
+      # Step 5: Push Helm Chart to Harbor
+      - name: Push Helm Chart to Harbor
+        env:
+          HARBOR_URL: ${{ secrets.HARBOR_URL }}
+          HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
+          HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
+        run: |
+          CHART_NAME=$(ls ./helm-charts/packages/*.tgz)
+          curl -u $HARBOR_USERNAME:$HARBOR_PASSWORD \
+            -X PUT "$HARBOR_URL/chartrepo/<PROJECT_NAME>/charts" \
+            -T $CHART_NAME
