@@ -2,10 +2,9 @@ name: Publish Helm Chart to Harbor
 
 on:
   push:
-    paths:
-      - 'helm-charts/**'  # Trigger only when changes are made to the Helm chart folder
     branches:
       - dev
+  pull_request:
 
 jobs:
   build-and-publish:
