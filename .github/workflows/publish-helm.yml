@@ -36,16 +36,16 @@ jobs:
           helm package ./helm-charts/itshop-helm -d ./helm-charts/packages
           ls -l ./helm-charts/packages
 
-      # Step 6: Push Helm Chart to Legacy Harbor Repository
+      # Step 6: Push Helm Chart to Harbor (Legacy)
       - name: Push Helm Chart to Harbor (Legacy)
         env:
           HARBOR_URL: ${{ secrets.HARBOR_URL }}
           HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
           HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
         run: |
-          # Add the legacy Helm repository
-          helm repo add harbor-helm oci://$HARBOR_URL/chartrepo/helm-test --username $HARBOR_USERNAME --password $HARBOR_PASSWORD
+          # Add the legacy Helm chart repository URL
+          helm repo add harbor-helm https://$HARBOR_URL/chartrepo/helm-test --username $HARBOR_USERNAME --password $HARBOR_PASSWORD
 
-          # Push the packaged Helm chart
+          # Push the packaged Helm chart to the Harbor legacy Helm chart repo
           CHART_NAME=$(ls ./helm-charts/packages/*.tgz)
           helm push $CHART_NAME harbor-helm
